@@ -99,9 +99,22 @@ export default function DashboardPage() {
   });
   const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [monthOrWeek, setMonthOrWeek] = useState(" ")
   const [historyCache, setHistoryCache] = useState<
     Record<string, HistoryItem[]>
   >({});
+
+  useEffect(()=>{
+    console.log(historyData.map((item)=> item.week))
+    const weekData = historyData.map((item)=> item.week)
+    const MonthValue = (weekData[0] - weekData[weekData.length -1]) + 1;
+    if(MonthValue%4 === 0){
+      setMonthOrWeek("Month");
+    }else{
+      setMonthOrWeek("Week");
+    }
+    // console.log("MonthValue", MonthValue%4)
+  }, [historyData])
 
   // const getDashboardTitle = () => {
   //   return `Hi ${user?.fullName || ""}`;
@@ -240,7 +253,7 @@ export default function DashboardPage() {
         {/* Students Of The Week */}
         <div className="">
           <h2 className="mb-4 text-center text-xl font-semibold text-foreground md:text-left">
-            Students Of The Week
+            Students Of The {monthOrWeek}
           </h2>
 
           {/* Mobile: Single column, Desktop: Row with stats on right */}
